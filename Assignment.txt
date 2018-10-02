@@ -1,0 +1,123 @@
+package javaapplication1;
+
+import java.util.*;
+
+public class JavaApplication1 {
+
+    public static void main(String[] args) {
+
+        //Task 1
+	Temprature temprature = new Temprature();
+	temprature.getData();
+				
+	new Scanner(System.in).nextLine();
+                
+    }
+    public static class Temprature{
+        
+       
+        //Duration in second
+        int duration=1; 
+        String delemeter1 = "-";
+        String delemeter2 = ",";
+        String[] userData;
+                        
+         public void getData(){
+                
+             System.out.println("Enter Temparature ( Seprated by '-' ) : ");
+			String data = new Scanner(System.in).nextLine();
+			userData = data.split(delemeter1);
+
+			ArrayList<TempData> lstTempData = new ArrayList<TempData>();
+                        
+                        for (int i = 0; i < userData.length; i++)
+			{
+				String[] splitdata = userData[i].split(delemeter2);
+
+				TempData tempData = new TempData();
+				
+                                tempData.setSensor_ID(Integer.parseInt(splitdata[0]));
+				tempData.setmSeconds(Integer.parseInt(splitdata[1]));
+				tempData.setTemparature(Integer.parseInt(splitdata[2]));
+                                
+				lstTempData.add(tempData);
+			}
+                        
+                        ArrayList<Integer> lstAvg1 = new ArrayList<Integer>();
+			ArrayList<Integer> lstAvg2 = new ArrayList<Integer>();
+			ArrayList<Integer> lstAvg3 = new ArrayList<Integer>();
+			ArrayList<Integer> lstAvg4 = new ArrayList<Integer>();
+
+                        for (int i = 0; i < lstTempData.size(); i++)
+			{
+				if (lstTempData.get(i).getmSeconds()>= 10000 && lstTempData.get(i).getmSeconds()<= 10999)
+				{
+					lstAvg1.add(lstTempData.get(i).getTemparature());
+				}
+				if (lstTempData.get(i).getmSeconds()>= 11000 && lstTempData.get(i).getmSeconds()<= 11999)
+				{
+					lstAvg2.add(lstTempData.get(i).getTemparature());
+				}
+				if (lstTempData.get(i).getmSeconds()>= 12000 && lstTempData.get(i).getmSeconds()<= 12999)
+				{
+					lstAvg3.add(lstTempData.get(i).getTemparature());
+				}
+				if (lstTempData.get(i).getmSeconds() >= 13000 && lstTempData.get(i).getmSeconds() <= 13999)
+				{
+					lstAvg4.add(lstTempData.get(i).getTemparature());
+				}
+                        }
+
+                        System.out.println("10000 to 10999 :" + lstAvg1.stream().mapToInt(val -> val).average().orElse(0.0));
+			System.out.println("11000 to 11999 :" + lstAvg2.stream().mapToInt(val -> val).average().orElse(0.0));
+			System.out.println("12000 to 12999 :" + lstAvg3.stream().mapToInt(val -> val).average().orElse(0.0));
+			System.out.println("13000 to 13999 :" + lstAvg4.stream().mapToInt(val -> val).average().orElse(0.0));
+         }
+    }
+     
+		
+		
+    public static class TempData{
+        private int sensor_ID;
+	private int mSeconds;
+	private int temparature;
+
+        public int getSensor_ID() {
+            return sensor_ID;
+        }
+
+        public void setSensor_ID(int sensor_ID) {
+            this.sensor_ID = sensor_ID;
+        }
+
+        public int getmSeconds() {
+            return mSeconds;
+        }
+
+        public void setmSeconds(int mSeconds) {
+            this.mSeconds = mSeconds;
+        }
+
+        public int getTemparature() {
+            return temparature;
+        }
+
+        public void setTemparature(int temparature) {
+            this.temparature = temparature;
+        }
+   
+    }
+    
+}
+
+//=========================================================
+Input : 
+	Enter Temparature ( Seprated by '-' ) : 
+	1,10000,40-1,10002,45-1,11015,50-2,10005,42-2,11051,45-2,12064,42-2,13161,42
+
+OutPut:
+	10000 to 10999 :42.333333333333336
+	11000 to 11999 :47.5
+	12000 to 12999 :42.0
+	13000 to 13999 :42.0
+
